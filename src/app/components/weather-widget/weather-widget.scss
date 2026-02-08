@@ -1,0 +1,94 @@
+.xp-weather {
+  position: fixed;
+  top: 110px;
+  right: 18px;
+  width: 220px;
+  border: 1px solid #0f2f63;
+  border-radius: 6px;
+  background: #f2f6ff;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+  font-family: Tahoma, 'MS Sans Serif', Arial, sans-serif;
+  color: #0b1e3a;
+  overflow: hidden;
+  z-index: 100;
+}
+
+.xp-weather-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 10px;
+  background: linear-gradient(180deg, #2f6fce 0%, #1f4f9d 100%);
+  color: #ffffff;
+  font-size: 11px;
+  border-bottom: 1px solid #0f2f63;
+}
+
+.xp-weather-name {
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.xp-weather-location {
+  font-size: 10px;
+  opacity: 0.9;
+  text-align: right;
+}
+
+.xp-weather-body {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+}
+
+.xp-weather-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 72px;
+  background: linear-gradient(180deg, #ffffff 0%, #dfe9ff 100%);
+  border: 1px solid #b8cbea;
+  border-radius: 6px;
+  padding: 6px;
+}
+
+.xp-weather-icon {
+  font-size: 30px;
+}
+
+.xp-weather-temp {
+  font-size: 20px;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.xp-weather-meta {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 11px;
+}
+
+.xp-weather-condition {
+  font-weight: 700;
+  color: #0f2f63;
+}
+
+.xp-weather-row {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #d2def4;
+  padding-bottom: 3px;
+}
+
+.xp-weather-row span:last-child {
+  font-weight: 700;
+}
+
+.xp-weather-status {
+  font-size: 10px;
+  color: #5b6c88;
+}

@@ -1,0 +1,59 @@
+.terminal-body {
+  flex: 1;
+  background: #0b0b0b;
+  color: #0f0;
+  padding: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid #0f2f63;
+}
+
+.output {
+  flex: 1;
+  overflow-y: auto;
+  font-size: 12px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.line {
+  margin: 0;
+}
+
+.prompt {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.input {
+  background: #000;
+  color: #0f0;
+  border: 1px solid #0f0;
+  outline: none;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  flex: 1;
+  caret-color: #0f0;
+  padding: 4px;
+  margin: 0;
+}
+
+.output::-webkit-scrollbar {
+  width: 12px;
+}
+
+.output::-webkit-scrollbar-track {
+  background: #111;
+}
+
+.output::-webkit-scrollbar-thumb {
+  background: #0f0;
+  border: 1px solid #0a0;
+}
+
+.output::-webkit-scrollbar-thumb:hover {
+  background: #0f0;
+}

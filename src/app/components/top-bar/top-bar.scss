@@ -1,0 +1,22 @@
+.top-bar {
+  display: flex;
+  align-items: center;
+  padding: 20px 24px;
+}
+.back-link {
+  text-decoration: none;
+  font-size: 18px;
+  color: #ffffff;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.date {
+  margin-left: 16px;
+  font-size: 12px;
+  opacity: 0.75;
+  text-transform: lowercase;
+  letter-spacing: 0.04em;
+}

@@ -1,0 +1,30 @@
+<div class="xp-weather">
+  <div class="xp-weather-title">
+    <span class="xp-weather-name">Weather</span>
+    <span class="xp-weather-location">{{ weather.location }}</span>
+  </div>
+
+  <div class="xp-weather-body">
+    <div class="xp-weather-main">
+      <div class="xp-weather-icon">{{ weather.icon }}</div>
+      <div class="xp-weather-temp">
+        {{ weather.temp ?? '--' }}°F
+      </div>
+    </div>
+
+    <div class="xp-weather-meta">
+      <div class="xp-weather-condition">{{ weather.condition }}</div>
+      <div class="xp-weather-row">
+        <span>Humidity</span>
+        <span>{{ weather.humidity ?? '--' }}%</span>
+      </div>
+      <div class="xp-weather-row">
+        <span>Wind</span>
+        <span>{{ weather.wind }}</span>
+      </div>
+      <div class="xp-weather-status" *ngIf="statusMessage">
+        {{ statusMessage }}
+      </div>
+    </div>
+  </div>
+</div>

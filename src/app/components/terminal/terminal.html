@@ -1,0 +1,16 @@
+<app-xp-window
+  [title]="'Command Prompt'"
+  [isOpen]="isOpen"
+  [width]="520"
+  [left]="180"
+  [top]="160"
+  (minimize)="minimizeWindow()"
+  (close)="closeWindow()"
+>
+  <div class="terminal-body">
+    <div class="output" #outputDiv>
+      <div *ngFor="let line of output" class="line">{{ line }}</div>
+      <div class="prompt">C:\> <input #input [(ngModel)]="currentInput" (keydown)="handleKeyPress($event)" class="input" placeholder="Type command..." aria-label="Command input" /></div>
+    </div>
+  </div>
+</app-xp-window>

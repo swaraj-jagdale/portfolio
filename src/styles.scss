@@ -1,0 +1,90 @@
+/* You can add global styles to this file, and also import other style files */
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+app-root {
+  display: block;
+  height: 100%;
+}
+
+.window {
+  --window-transform: none;
+  transform: var(--window-transform);
+  transition: opacity 160ms ease-out, transform 160ms ease-out;
+}
+
+.window.hidden,
+.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: var(--window-transform) scale(0.98);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .window {
+    transition: none;
+  }
+}
+
+.window {
+  animation: xp-app-open 160ms ease-out;
+  transform-origin: top left;
+  will-change: transform, opacity;
+}
+
+@keyframes xp-app-open {
+  0% {
+    opacity: 0;
+    transform: scale(0.98) translateY(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .window {
+    animation: none;
+    will-change: auto;
+  }
+}
+
+.minimize-btn {
+  padding-bottom: 4px !important;
+}
+
+@media (max-width: 900px) {
+  html,
+  body {
+    overflow: auto;
+  }
+
+  body {
+    touch-action: pan-x pan-y;
+  }
+
+  .window {
+    width: calc(100vw - 24px) !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: calc(100vh - 140px) !important;
+  }
+
+  .window .window-body,
+  .window .window-content {
+    max-height: calc(100vh - 200px);
+    overflow: auto;
+  }
+
+  .title-bar button {
+    min-width: 36px;
+    min-height: 32px;
+  }
+}

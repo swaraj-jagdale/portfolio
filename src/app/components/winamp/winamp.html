@@ -1,0 +1,69 @@
+<app-xp-window
+  [title]="'♪ Winamp Player'"
+  [isOpen]="isOpen"
+  [width]="350"
+  [left]="250"
+  [top]="150"
+  (minimize)="minimizeWindow()"
+  (close)="close()"
+>
+  <div class="window-content">
+    <!-- Display Screen -->
+    <div class="display-screen">
+      <div class="track-info">
+        <div class="track-title">{{ getCurrentTrack().title }}</div>
+        <div class="track-artist">{{ getCurrentTrack().artist }}</div>
+      </div>
+      <div class="time-display">{{ currentTime }} / {{ getCurrentTrack().duration }}</div>
+    </div>
+
+    <!-- Visualizer -->
+    <div class="visualizer">
+      <div class="visualizer-bar" 
+           *ngFor="let height of visualizerBars"
+           [style.height.%]="height">
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <button class="control-btn" (click)="previous()">⏮</button>
+      <button class="control-btn play-btn" (click)="togglePlay()">
+        {{ isPlaying ? '⏸' : '▶' }}
+      </button>
+      <button class="control-btn" (click)="next()">⏭</button>
+      
+      <div class="volume-control">
+        <span class="volume-icon">Seek</span>
+        <input 
+          type="range" 
+          min="0" 
+          max="100" 
+          [value]="seekValue"
+          (input)="seekTo($event)"
+          class="volume-slider"
+          aria-label="Seek"
+          title="Seek"
+        />
+        <span class="volume-value">{{ currentTime }}</span>
+      </div>
+    </div>
+
+    <!-- Playlist -->
+    <div class="playlist">
+      <div class="playlist-header">Playlist</div>
+      <div class="playlist-items">
+        <div 
+          class="playlist-item" 
+          *ngFor="let track of tracks; let i = index"
+          [class.active]="i === currentTrack"
+          (click)="selectTrack(i)"
+        >
+          <span class="track-number">{{ i + 1 }}.</span>
+          <span class="track-name">{{ track.title }} - {{ track.artist }}</span>
+          <span class="track-duration">{{ track.duration }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-xp-window>

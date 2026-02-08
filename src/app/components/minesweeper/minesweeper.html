@@ -1,0 +1,35 @@
+<app-xp-window
+  [title]="'Minesweeper'"
+  [isOpen]="isOpen"
+  [width]="420"
+  [left]="120"
+  [top]="120"
+  (minimize)="minimizeWindow()"
+  (close)="closeWindow()"
+>
+  <div class="mine-body">
+    <div class="status-bar">
+      <div class="mines-left">Mines: {{ mineCount - flagCount }}</div>
+      <button (click)="initGame()" class="new-game">New Game</button>
+    </div>
+
+    <div *ngIf="gameOver" class="message game-over">Game Over!</div>
+    <div *ngIf="gameWon" class="message game-won">You Won!</div>
+
+    <div class="grid">
+      <button
+        *ngFor="let idx of [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99]"
+        [ngClass]="getCellClass(grid[Math.floor(idx/10)][idx % 10])"
+        (click)="revealCell(idx % 10, Math.floor(idx/10))"
+        (contextmenu)="toggleFlag($event, idx % 10, Math.floor(idx/10))"
+        class="cell"
+      >
+        <span *ngIf="grid[Math.floor(idx/10)][idx % 10].isFlagged && !grid[Math.floor(idx/10)][idx % 10].isRevealed" class="flag">🚩</span>
+        <span *ngIf="grid[Math.floor(idx/10)][idx % 10].isRevealed && grid[Math.floor(idx/10)][idx % 10].isMine" class="mine">💣</span>
+        <span *ngIf="grid[Math.floor(idx/10)][idx % 10].isRevealed && !grid[Math.floor(idx/10)][idx % 10].isMine && grid[Math.floor(idx/10)][idx % 10].adjacentMines > 0" [ngClass]="'num-' + grid[Math.floor(idx/10)][idx % 10].adjacentMines">
+          {{ grid[Math.floor(idx/10)][idx % 10].adjacentMines }}
+        </span>
+      </button>
+    </div>
+  </div>
+</app-xp-window>

@@ -1,0 +1,177 @@
+<app-xp-window
+  [title]="'My Computer'"
+  [isOpen]="isOpen"
+  [width]="760"
+  [height]="520"
+  [left]="80"
+  [top]="70"
+  (minimize)="minimizeWindow()"
+  (close)="close()"
+>
+  <div class="xp-explorer">
+    <div class="xp-toolbar">
+      <button class="xp-tool-btn">
+        <span class="xp-tool-icon back"></span>
+        Back
+      </button>
+      <button class="xp-tool-btn">
+        <span class="xp-tool-icon forward"></span>
+        Forward
+      </button>
+      <button class="xp-tool-btn">
+        <span class="xp-tool-icon up"></span>
+        Up
+      </button>
+      <div class="xp-toolbar-sep"></div>
+      <button class="xp-tool-btn">
+        <span class="xp-tool-icon search"></span>
+        Search
+      </button>
+      <button class="xp-tool-btn">
+        <span class="xp-tool-icon folders"></span>
+        Folders
+      </button>
+    </div>
+
+    <div class="xp-address">
+      <span class="xp-address-label">Address</span>
+      <div class="xp-address-field">My Computer</div>
+      <button class="xp-go-btn">Go</button>
+    </div>
+
+    <div class="xp-body">
+      <aside class="xp-sidebar">
+        <div class="xp-side-section">
+          <div class="xp-side-title">System Tasks</div>
+          <button class="xp-side-link">View system information</button>
+          <button class="xp-side-link">Add or remove programs</button>
+          <button class="xp-side-link">Change a setting</button>
+        </div>
+
+        <div class="xp-side-section">
+          <div class="xp-side-title">Other Places</div>
+          <button class="xp-side-link">My Network Places</button>
+          <button class="xp-side-link">My Documents</button>
+          <button class="xp-side-link">Shared Documents</button>
+          <button class="xp-side-link">Control Panel</button>
+        </div>
+
+        <div class="xp-side-section">
+          <div class="xp-side-title">Details</div>
+          <div class="xp-side-detail">
+            <div class="xp-detail-title">Demo Account</div>
+            <div class="xp-detail-line">Documents</div>
+            <div class="xp-detail-line">File Folder</div>
+            <div class="xp-detail-line">Modified: 11/29/2026</div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="xp-main">
+        <div class="xp-section">
+          <div class="xp-section-title">Files Stored on This Computer</div>
+          <div class="xp-icon-grid">
+            <div class="xp-icon-item">
+              <img src="/public/default-folder.png" alt="Shared Documents" />
+              <span>Shared Documents</span>
+            </div>
+            <div class="xp-icon-item">
+              <img src="/public/black-folder.png" alt="Demo Documents" />
+              <span>Demo Documents</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="xp-section">
+          <div class="xp-section-title">Photos (D:)</div>
+          <div class="xp-photo-grid">
+            <button
+              class="xp-photo-item"
+              type="button"
+              *ngFor="let photo of photos; let i = index"
+              (click)="openPhoto(i)"
+            >
+              <img
+                [src]="photo.url"
+                [alt]="photo.name"
+                title="{{ photo.name }}"
+                loading="lazy"
+                decoding="async"
+              />
+              <span>{{ photo.name }}</span>
+            </button>
+            <div class="xp-empty" *ngIf="!photos.length">
+              No photos found.
+            </div>
+          </div>
+        </div>
+
+        <div class="xp-section">
+          <div class="xp-section-title">Hard Disk Drives</div>
+          <div class="xp-icon-grid">
+            <button
+              class="xp-icon-item xp-drive-item"
+              type="button"
+              *ngFor="let drive of drives"
+              (click)="onDriveOpen(drive)"
+            >
+              <img src="/public/computer-icon-1036.png" alt="Local Disk" />
+              <span>{{ drive.letter }} {{ drive.label }}</span>
+              <div class="xp-subtext">{{ drive.usedGB }} GB used / {{ drive.totalGB }} GB total</div>
+              <div class="xp-drive-bar">
+                <div class="xp-drive-fill" [style.width]="getDrivePercent(drive) + '%'"> </div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <div class="xp-section">
+          <div class="xp-section-title">Devices with Removable Storage</div>
+          <div class="xp-icon-grid">
+            <div class="xp-icon-item">
+              <img src="/public/default-folder.png" alt="CD Drive" />
+              <span>DVD-RW Drive (D:)</span>
+            </div>
+            <div class="xp-icon-item">
+              <img src="/public/default-folder.png" alt="Floppy Drive" />
+              <span>3 1/2 Floppy (A:)</span>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="xp-statusbar">
+      <span>My Computer</span>
+      <span>{{ drives.length + 4 }} object(s)</span>
+    </div>
+  </div>
+</app-xp-window>
+
+<app-xp-window
+  [title]="currentPhoto?.name || 'Photo Viewer'"
+  [isOpen]="isViewerOpen"
+  [width]="viewerWidth"
+  [height]="viewerHeight"
+  [centered]="true"
+  [showMinimize]="false"
+  (close)="closeViewer()"
+>
+  <div class="photo-viewer">
+    <div class="photo-toolbar">
+      <button class="viewer-btn" (click)="prevPhoto()">◄ Previous</button>
+      <button class="viewer-btn" (click)="nextPhoto()">Next ►</button>
+    </div>
+    <div class="photo-frame">
+      <img
+        *ngIf="currentPhoto"
+        [src]="currentPhoto.url"
+        [alt]="currentPhoto.name"
+        title="{{ currentPhoto.name }}"
+        loading="eager"
+        decoding="async"
+        (load)="onPhotoLoad($event)"
+      />
+    </div>
+  </div>
+</app-xp-window>

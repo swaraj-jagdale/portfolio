@@ -1,0 +1,248 @@
+<div class="taskbar">
+  <button class="start-button" (click)="toggleMenu()">
+    <span>Start</span>
+  </button>
+
+  <div class="start-menu" [class.open]="isOpen()">
+    <div class="menu-header">
+      <div class="user-profile">
+        <img src="/public/swaraj.jpg" alt="Swaraj Jagdale" class="profile-image" />
+        <div class="profile-info">
+          <span class="profile-name">Swaraj Jagdale</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-body">
+      <div class="menu-left">
+        <div class="menu-items">
+          <button class="menu-item" type="button" (click)="launchAboutMe()">
+            <img src="/public/default-folder.png" alt="About Me" class="menu-icon" />
+            <span class="label">About Me</span>
+          </button>
+          <a routerLink="/black-folder" class="menu-item" (click)="closeMenu()">
+            <img src="/public/black-folder.png" alt="Master folder" class="menu-icon" />
+            <span class="label">Master</span>
+          </a>
+          <a routerLink="/grey-folder" class="menu-item" (click)="closeMenu()">
+            <img src="/public/grey-folder.png" alt="Projects folder" class="menu-icon" />
+            <span class="label">Projects</span>
+          </a>
+          <a routerLink="/nuthoughts" class="menu-item" (click)="closeMenu()">
+            <img src="/public/default-folder.png" alt="Nu Thoughts folder" class="menu-icon" />
+            <span class="label">Nu Thoughts</span>
+          </a>
+          <a href="javascript:void(0)" class="menu-item" (click)="toggleSubmenu()">
+            <img src="/public/journal.png" alt="Socials submenu" class="menu-icon" />
+            <span class="label">Socials</span>
+            <span class="arrow"> ▶</span>
+          </a>
+          <a href="javascript:void(0)" class="menu-item" (click)="toggleGamesSubmenu()">
+            <img src="/public/games.png" alt="Games submenu" class="menu-icon" />
+            <span class="label">Games</span>
+            <span class="arrow"> ▶</span>
+          </a>
+          <a href="javascript:void(0)" class="menu-item" (click)="toggleWallpaperSubmenu()">
+            <img src="/public/default-folder.png" alt="Wallpaper submenu" class="menu-icon" />
+            <span class="label">Wallpaper</span>
+            <span class="arrow"> ▶</span>
+          </a>
+          <a href="javascript:void(0)" class="menu-item" (click)="toggleUtilitiesSubmenu()">
+            <img src="/public/default-folder.png" alt="Utilities submenu" class="menu-icon" />
+            <span class="label">Utilities</span>
+            <span class="arrow"> ▶</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="menu-right">
+        <button class="quick-item" (click)="launchMyComputer(); closeMenu()">
+          <span class="label">My Computer</span>
+        </button>
+        <button class="quick-item" (click)="launchRecycleBin(); closeMenu()">
+          <span class="label">Recycle Bin</span>
+        </button>
+        <button class="quick-item" (click)="launchInternetExplorer(); closeMenu()">
+          <span class="label">Internet Explorer</span>
+        </button>
+        <button class="quick-item" (click)="launchWinamp(); closeMenu()">
+          <span class="label">Winamp</span>
+        </button>
+        <button class="quick-item" (click)="launchTaskManager(); closeMenu()">
+          <span class="label">Task Manager</span>
+        </button>
+        <button class="quick-item" (click)="launchTerminal(); closeMenu()">
+          <span class="label">Terminal</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="menu-footer">
+      <button class="footer-btn" (click)="logOff()">
+        <span class="power-icon"></span>
+        <span>Log Off</span>
+      </button>
+      <button class="footer-btn" (click)="closeMenu()">
+        <span class="power-icon alt"></span>
+        <span>Turn Off Computer</span>
+      </button>
+    </div>
+
+    <div class="submenu" [class.open]="isSubmenuOpen()">
+      <button
+        class="submenu-item"
+        *ngFor="let link of socialLinks"
+        (click)="openSocialLink(link.url)"
+      >
+        <span class="label">{{ link.label }}</span>
+      </button>
+    </div>
+
+    <div class="submenu games-submenu" [class.open]="isGamesSubmenuOpen()">
+      <button class="submenu-item" (click)="launchSnakeGame()">
+        <span class="label">snake</span>
+      </button>
+      <button class="submenu-item" (click)="launchDoomGame()">
+        <span class="label">doom (pre-release)</span>
+      </button>
+      <button class="submenu-item" (click)="launchMinesweeper()">
+        <span class="label">minesweeper</span>
+      </button>
+      <button class="submenu-item" (click)="launchMemoryGame()">
+        <span class="label">memory game</span>
+      </button>
+      <button class="submenu-item" (click)="launchTetris()">
+        <span class="label">tetris</span>
+      </button>
+    </div>
+
+    <div class="submenu wallpaper-submenu" [class.open]="isWallpaperSubmenuOpen()">
+      <button class="submenu-item" (click)="changeWallpaper('windows')">
+        <span class="label">windows</span>
+      </button>
+      <button class="submenu-item" (click)="changeWallpaper('black')">
+        <span class="label">black</span>
+      </button>
+      <button class="submenu-item" (click)="changeWallpaper('grid')">
+        <span class="label">grid</span>
+      </button>
+      <button class="submenu-item" (click)="changeWallpaper('dots')">
+        <span class="label">dots</span>
+      </button>
+      <button class="submenu-item" (click)="changeWallpaper('stripes')">
+        <span class="label">stripes</span>
+      </button>
+      <button class="submenu-item" (click)="changeWallpaper('sunset')">
+        <span class="label">sunset</span>
+      </button>
+      <button class="submenu-item" (click)="changeWallpaper('ocean')">
+        <span class="label">ocean</span>
+      </button>
+      <button class="submenu-item" (click)="changeWallpaper('forest')">
+        <span class="label">forest</span>
+      </button>
+      <button class="submenu-item" (click)="changeWallpaper('rainbow')">
+        <span class="label">rainbow</span>
+      </button>
+      <button class="submenu-item" (click)="changeWallpaper('purple-haze')">
+        <span class="label">purple haze</span>
+      </button>
+      <button class="submenu-item" (click)="changeWallpaper('neon-grid')">
+        <span class="label">neon grid</span>
+      </button>
+      <button class="submenu-item" (click)="changeWallpaper('retro-wave')">
+        <span class="label">retro wave</span>
+      </button>
+      <button class="submenu-item" (click)="changeWallpaper('cherry-blossom')">
+        <span class="label">cherry blossom</span>
+      </button>
+      <button class="submenu-item" (click)="changeWallpaper('matrix')">
+        <span class="label">matrix</span>
+      </button>
+      <button class="submenu-item" (click)="changeWallpaper('fire')">
+        <span class="label">fire</span>
+      </button>
+    </div>
+
+    <div class="submenu utilities-submenu" [class.open]="isUtilitiesSubmenuOpen()">
+      <button class="submenu-item" (click)="launchCalculator()">
+        <span class="label">calculator</span>
+      </button>
+      <button class="submenu-item" (click)="launchTaskManager()">
+        <span class="label">task manager</span>
+      </button>
+      <button class="submenu-item" (click)="launchTerminal()">
+        <span class="label">terminal</span>
+      </button>
+      <button class="submenu-item" (click)="launchMyComputer()">
+        <span class="label">my computer</span>
+      </button>
+      <button class="submenu-item" (click)="launchRecycleBin()">
+        <span class="label">recycle bin</span>
+      </button>
+      <button class="submenu-item" (click)="launchInternetExplorer()">
+        <span class="label">internet explorer</span>
+      </button>
+      <button class="submenu-item" (click)="launchWinamp()">
+        <span class="label">winamp</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Taskbar Buttons for Minimized Apps -->
+  <div class="taskbar-buttons">
+    <button 
+      *ngFor="let app of minimizedApps" 
+      class="taskbar-btn"
+      (click)="restoreApp.emit(app.id)"
+      [title]="app.name"
+    >
+      {{ app.name }}
+    </button>
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="system-tray">
+    <!-- Volume Control -->
+    <div class="tray-widget volume-widget" (click)="toggleVolumePopup()" title="Volume">
+      <span class="widget-icon">🔊</span>
+      <div class="volume-popup" [class.open]="isVolumePopupOpen()">
+        <input
+          type="range"
+          min="0"
+          max="100"
+          [value]="volume()"
+          (change)="setVolume($event)"
+          class="volume-slider"
+          aria-label="Volume"
+          title="Volume"
+        />
+        <span class="volume-value">{{ volume() }}%</span>
+      </div>
+    </div>
+
+    <!-- Bluetooth Status -->
+    <button class="tray-widget bluetooth-widget" [class.active]="isBluetoothOn()" (click)="toggleBluetooth()" title="Bluetooth">
+      <span class="widget-icon">📡</span>
+    </button>
+
+    <!-- WiFi Status -->
+    <button class="tray-widget wifi-widget" [class.active]="isWifiOn()" (click)="toggleWifi()" title="WiFi">
+      <span class="widget-icon">📶</span>
+    </button>
+
+    <!-- Battery Status -->
+    <div class="tray-widget battery-widget" [title]="'Battery: ' + batteryLevel() + '%'">
+      <span class="widget-icon">🔋</span>
+      <span class="battery-text">{{ batteryLevel() }}%</span>
+    </div>
+
+    <!-- Dark Mode Toggle -->
+    <button class="tray-widget theme-widget" [class.active]="isDarkMode()" (click)="toggleDarkMode()" title="Theme">
+      <span class="widget-icon">{{ isDarkMode() ? '☀️' : '🌙' }}</span>
+    </button>
+  </div>
+</div>
+
+<div class="menu-backdrop" *ngIf="isOpen()" (click)="closeMenu()"></div>

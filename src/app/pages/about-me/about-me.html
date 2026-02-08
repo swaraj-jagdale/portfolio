@@ -1,0 +1,102 @@
+<div class="about-page">
+  <div class="xp-window">
+    <div class="xp-titlebar">
+      <div class="xp-title">About Me</div>
+      <div class="xp-window-controls">
+        <button class="xp-control minimize" aria-label="Minimize"></button>
+        <button class="xp-control maximize" aria-label="Maximize"></button>
+        <button class="xp-control close" aria-label="Close"></button>
+      </div>
+    </div>
+
+    <div class="xp-menubar">
+      <button class="xp-menu-item">File</button>
+      <button class="xp-menu-item">View</button>
+      <button class="xp-menu-item">Help</button>
+    </div>
+
+    <div class="xp-toolbar">
+      <button class="xp-tool-btn" (click)="goHome()">
+        <span class="tool-dot green"></span>
+        Back
+      </button>
+      <button class="xp-tool-btn muted">
+        <span class="tool-dot yellow"></span>
+        Forward
+      </button>
+      <div class="xp-toolbar-sep"></div>
+      <button class="xp-tool-btn">
+        <span class="tool-dot blue"></span>
+        My Projects
+      </button>
+      <button class="xp-tool-btn">
+        <span class="tool-dot red"></span>
+        My Resume
+      </button>
+    </div>
+
+    <div class="xp-address">
+      <span class="xp-address-label">Address</span>
+      <div class="xp-address-field">About Me</div>
+      <button class="xp-go-btn">Go</button>
+    </div>
+
+    <div class="xp-content">
+      <aside class="xp-sidebar">
+        <div class="xp-panel">
+          <div class="xp-panel-title">Social Links</div>
+          <div class="xp-panel-body">
+            <a class="xp-link" *ngFor="let link of socialLinks" [href]="link.url" target="_blank" rel="noopener">
+              <span class="link-dot"></span>
+              {{ link.label }}
+            </a>
+          </div>
+        </div>
+
+        <div class="xp-panel">
+          <div class="xp-panel-title">Skills</div>
+          <div class="xp-panel-body">
+            <div class="xp-item" *ngFor="let skill of skills">
+              <span class="link-dot"></span>
+              {{ skill }}
+            </div>
+          </div>
+        </div>
+
+        <div class="xp-panel">
+          <div class="xp-panel-title">Software</div>
+          <div class="xp-panel-body">
+            <div class="xp-item" *ngFor="let item of software">
+              <span class="link-dot"></span>
+              {{ item }}
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="xp-main">
+        <div class="xp-main-inner">
+          <h1>About Me</h1>
+          <p>
+            I am a visual designer who loves building expressive interfaces and clear, human
+            experiences. My work blends brand identity, UI systems, and playful web moments that
+            still feel purposeful.
+          </p>
+          <p>
+            I started by exploring print and motion design, then moved toward interactive product
+            work. Today I focus on crafting thoughtful UI with strong hierarchy, careful spacing,
+            and details that make interfaces feel alive without getting in the way.
+          </p>
+          <p>
+            When I am not designing, I am experimenting with new tools, refining workflows, and
+            learning how to make complex concepts feel simple and approachable.
+          </p>
+          <p>
+            This project is a personal playground that recreates a familiar operating system in the
+            browser while showcasing my work, ideas, and the details I love to obsess over.
+          </p>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>

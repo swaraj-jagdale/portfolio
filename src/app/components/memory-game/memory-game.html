@@ -1,0 +1,30 @@
+<app-xp-window
+  [title]="'Memory Game'"
+  [isOpen]="isOpen"
+  [width]="420"
+  [left]="140"
+  [top]="140"
+  (minimize)="minimizeWindow()"
+  (close)="closeWindow()"
+>
+  <div class="memory-body">
+    <div class="stats">
+      <div>Matches: {{ score }}/8</div>
+      <div>Moves: {{ moves }}</div>
+      <button (click)="initGame()" class="new-game">New Game</button>
+    </div>
+
+    <div *ngIf="gameWon" class="message game-won">You Won in {{ moves }} moves!</div>
+
+    <div class="grid">
+      <button
+        *ngFor="let card of cards"
+        [ngClass]="{ revealed: card.isRevealed, matched: card.isMatched }"
+        (click)="clickCard(card)"
+        class="card"
+      >
+        <span *ngIf="card.isRevealed || card.isMatched" class="value">{{ card.value }}</span>
+      </button>
+    </div>
+  </div>
+</app-xp-window>

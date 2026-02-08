@@ -1,0 +1,123 @@
+<app-xp-window
+  [title]="'About Me'"
+  [isOpen]="isOpen"
+  [width]="windowWidth"
+  [height]="windowHeight"
+  [left]="windowLeft"
+  [top]="windowTop"
+  (minimize)="minimizeWindow()"
+  (close)="close()"
+>
+  <div class="about-window">
+    <div class="xp-menubar">
+      <button class="xp-menu-item">File</button>
+      <button class="xp-menu-item">View</button>
+      <button class="xp-menu-item">Help</button>
+    </div>
+
+    <div class="xp-toolbar">
+      <button class="xp-tool-btn">
+        <span class="tool-dot green"></span>
+        Back
+      </button>
+      <button class="xp-tool-btn muted">
+        <span class="tool-dot yellow"></span>
+        Forward
+      </button>
+      <div class="xp-toolbar-sep"></div>
+      <button class="xp-tool-btn">
+        <span class="tool-dot blue"></span>
+        My Projects
+      </button>
+      <button class="xp-tool-btn">
+        <span class="tool-dot red"></span>
+        My Resume
+      </button>
+    </div>
+
+    <div class="xp-address">
+      <span class="xp-address-label">Address</span>
+      <div class="xp-address-field">About Me</div>
+      <button class="xp-go-btn">Go</button>
+    </div>
+
+    <div class="xp-content">
+      <aside class="xp-sidebar">
+        <div class="xp-panel">
+          <div class="xp-panel-title">Social Links</div>
+          <div class="xp-panel-body">
+            <a
+              class="xp-link"
+              *ngFor="let link of socialLinks"
+              [href]="link.url"
+              target="_blank"
+              rel="noopener"
+            >
+              <span class="link-dot"></span>
+              {{ link.label }}
+            </a>
+          </div>
+        </div>
+
+        <div class="xp-panel">
+          <div class="xp-panel-title">Skills</div>
+          <div class="xp-panel-body">
+            <div class="xp-item" *ngFor="let skill of skills">
+              <span class="link-dot"></span>
+              {{ skill }}
+            </div>
+          </div>
+        </div>
+
+        <div class="xp-panel">
+          <div class="xp-panel-title">Software</div>
+          <div class="xp-panel-body">
+            <div class="xp-item" *ngFor="let item of software">
+              <span class="link-dot"></span>
+              {{ item }}
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="xp-main">
+        <div class="xp-main-inner">
+          <h1>About Me</h1>
+          <p>
+            I am a software engineer with full-stack experience, specializing in building scalable,
+            high-performance web applications and distributed systems. My primary focus spans
+            front-end development using Angular and modern UI component libraries, as well as backend
+            engineering with Go (Golang) and Spring Boot, where I design and implement robust APIs,
+            microservices, and data-driven services.
+          </p>
+          <p>
+            In my professional work, I emphasize clean architecture, performance optimization, and
+            reliability across the stack. I have hands-on experience developing RESTful services,
+            handling concurrency and asynchronous workflows in Go, and building secure, maintainable
+            backend systems using Spring Boot. I also work extensively with test automation and
+            quality assurance, leveraging frameworks like Cypress to ensure stability in large-scale
+            enterprise applications.
+          </p>
+          <p>
+            Alongside industry development, I bring a strong research and problem-solving mindset. I
+            have worked on applied machine learning and deep learning projects, including computer
+            vision, explainable AI, and multi-modal reasoning tasks such as Visual Commonsense
+            Reasoning (VCR). My research interests lie in structured reasoning, graph-based
+            transformers, and the integration of AI into real-world software systems.
+          </p>
+          <p>
+            I enjoy solving complex engineering challenges, whether optimizing frontend performance,
+            designing scalable backend services, or translating research concepts into production-
+            ready solutions. I value clarity, discipline, and continuous improvement, and I aim to
+            build systems that are both technically sound and user-focused.
+          </p>
+          <p>
+            I am driven by long-term growth as an engineer and researcher, with a strong interest in
+            building impactful products that combine thoughtful system design with intelligent
+            automation.
+          </p>
+        </div>
+      </main>
+    </div>
+  </div>
+</app-xp-window>

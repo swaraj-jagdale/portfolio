@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nuthoughts.app/sitemap.xml

@@ -1,0 +1,104 @@
+.tetris-body {
+  padding: 12px;
+  background: #f2f6ff;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-family: Tahoma, 'MS Sans Serif', Arial, sans-serif;
+}
+
+.tetris-container {
+  display: flex;
+  gap: 12px;
+}
+
+.game-board {
+  background: black;
+  border: 2px solid black;
+  padding: 4px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(10, 18px);
+  grid-template-rows: repeat(20, 18px);
+  gap: 0;
+  background: #000;
+}
+
+.cell {
+  width: 18px;
+  height: 18px;
+  background: #000;
+  border: 1px solid #1a1a1a;
+}
+
+.color-1 { background: #00f0f0; } // Cyan (I)
+.color-2 { background: #f0f000; } // Yellow (O)
+.color-3 { background: #f000f0; } // Magenta (T)
+.color-4 { background: #f0a000; } // Orange (L)
+.color-5 { background: #0000f0; } // Blue (J)
+.color-6 { background: #00f000; } // Green (S)
+.color-7 { background: #f00000; } // Red (Z)
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.score-box {
+  background: #ffffff;
+  border: 1px solid #0f2f63;
+  padding: 8px 10px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+  min-width: 100px;
+  font-family: Tahoma, 'MS Sans Serif', Arial, sans-serif;
+  color: #0f2f63;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.btn-start {
+  background: linear-gradient(180deg, #ffffff 0%, #dbe7fb 100%);
+  border: 1px solid #9fb4d7;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-family: Tahoma, 'MS Sans Serif', Arial, sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  color: #0f2f63;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+
+  &:active {
+    transform: translate(1px, 1px);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.message {
+  background: white;
+  border: 2px solid black;
+  padding: 8px;
+  text-align: center;
+  font-weight: bold;
+  color: black;
+  font-size: 12px;
+  font-family: 'Courier New', monospace;
+}
+
+.instructions {
+  background: white;
+  border: 2px solid black;
+  padding: 8px 10px;
+  font-size: 11px;
+  text-align: center;
+  line-height: 1.6;
+  font-family: 'Courier New', monospace;
+}

@@ -1,0 +1,66 @@
+<app-xp-window
+  [title]="'S Games (S:)'"
+  [isOpen]="isOpen"
+  [width]="640"
+  [height]="480"
+  [left]="120"
+  [top]="90"
+  (minimize)="minimizeWindow()"
+  (close)="close()"
+>
+  <div class="xp-explorer">
+    <div class="xp-toolbar">
+      <button class="xp-tool-btn">
+        <span class="xp-tool-icon back"></span>
+        Back
+      </button>
+      <button class="xp-tool-btn">
+        <span class="xp-tool-icon forward"></span>
+        Forward
+      </button>
+      <button class="xp-tool-btn">
+        <span class="xp-tool-icon up"></span>
+        Up
+      </button>
+      <div class="xp-toolbar-sep"></div>
+      <button class="xp-tool-btn">
+        <span class="xp-tool-icon search"></span>
+        Search
+      </button>
+      <button class="xp-tool-btn">
+        <span class="xp-tool-icon folders"></span>
+        Folders
+      </button>
+    </div>
+
+    <div class="xp-address">
+      <span class="xp-address-label">Address</span>
+      <div class="xp-address-field">S Games (S:)</div>
+      <button class="xp-go-btn">Go</button>
+    </div>
+
+    <div class="xp-body">
+      <div class="xp-main">
+        <div class="xp-section">
+          <div class="xp-section-title">Games</div>
+          <div class="xp-icon-grid">
+            <button
+              class="xp-icon-item"
+              type="button"
+              *ngFor="let game of games"
+              (click)="launchGame(game.id)"
+            >
+              <img [src]="game.icon" [alt]="game.name" title="{{ game.name }}" />
+              <span>{{ game.name }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="xp-statusbar">
+      <span>S Games (S:)</span>
+      <span>{{ games.length }} object(s)</span>
+    </div>
+  </div>
+</app-xp-window>

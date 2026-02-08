@@ -1,0 +1,242 @@
+<div class="xp-boot" *ngIf="isBooting">
+  <div class="xp-boot-center">
+    <div class="xp-boot-header">
+      <div class="xp-boot-logo">
+        <span class="tile t1"></span>
+        <span class="tile t2"></span>
+        <span class="tile t3"></span>
+        <span class="tile t4"></span>
+      </div>
+      <div class="xp-boot-logo-text">
+        <div class="xp-boot-microsoft">Microsoft</div>
+        <div class="xp-boot-title">
+          <span class="xp-boot-windows">Windows</span>
+          <span class="xp-boot-xp">XP</span>
+        </div>
+        <div class="xp-boot-edition">Professional</div>
+      </div>
+    </div>
+    <div class="xp-boot-bar">
+      <span class="xp-boot-bar-inner"></span>
+    </div>
+  </div>
+  <div class="xp-boot-left">Copyright Microsoft Corporation</div>
+  <div class="xp-boot-right">Microsoft</div>
+</div>
+
+<div class="xp-login" *ngIf="!isBooting && !isLoggedIn">
+  <div class="xp-login-shell">
+    <div class="xp-login-left">
+      <div class="xp-login-logo">
+        <div class="xp-login-logo-mark">
+          <span class="tile t1"></span>
+          <span class="tile t2"></span>
+          <span class="tile t3"></span>
+          <span class="tile t4"></span>
+        </div>
+        <div class="xp-login-logo-text">
+          <div class="xp-login-title">
+            <span class="xp-login-name">NuThoughts</span>
+            <span class="xp-login-xp">xp</span>
+          </div>
+          <div class="xp-login-role">Visual Designer</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="xp-login-right">
+      <div class="xp-login-user-card" (click)="onLogin()">
+        <img src="/public/me.png" alt="User" width="64" height="64" />
+        <div class="xp-login-user-info">
+          <div class="xp-login-user-name">Swaraj Jagdale</div>
+          <div class="xp-login-user-role">Visual Designer</div>
+        </div>
+      </div>
+      <div class="xp-login-instructions">To begin, click on Swaraj Jagdale to log in</div>
+    </div>
+  </div>
+
+  <div class="xp-login-footer">
+    <div class="xp-login-footer-left">
+      <span class="xp-login-power"></span>
+      <span>Restart NuThoughts XP</span>
+    </div>
+    <div class="xp-login-footer-right">
+      After you log on, the system's yours to explore.
+      <span>Every detail has been designed with a purpose.</span>
+    </div>
+  </div>
+</div>
+
+<div class="desktop" [class.is-locked]="isBooting || !isLoggedIn">
+  <a class="icon black-folder" routerLink="/black-folder" data-drag="true">
+    <img src="/public/black-folder.png" alt="Black folder" />
+    <span class="sr-only">Master</span>
+  </a>
+
+  <a class="icon grey-folder" routerLink="/grey-folder" data-drag="true">
+    <img src="/public/grey-folder.png" alt="Grey folder" />
+    <span class="sr-only">Step</span>
+  </a>
+
+  <a class="icon default-folder" routerLink="/nuthoughts" data-drag="true">
+    <img src="/public/default-folder.png" alt="Yellow folder" />
+    <span>nu thoughts</span>
+  </a>
+
+  <!-- TXT FILE ICON -->
+  <div class="icon txt-file" id="notesIcon" data-drag="true">
+    <img src="/public/notepad.png" alt="notes.txt" />
+    <span>notes.txt</span>
+  </div>
+
+  <!-- CLOCK WIDGET -->
+  <div class="clock-widget">
+    <div class="clock-display">{{ currentTime }}</div>
+  </div>
+
+  <!-- DESKTOP ICONS FOR NEW APPS -->
+  <div class="icon desktop-icon" id="myComputerIcon" (click)="onOpenMyComputer()" data-drag="true">
+    <img src="/public/computer-icon-1036.png" alt="My Computer" />
+    <span>My Computer</span>
+  </div>
+
+  <div class="icon desktop-icon" id="recycleBinIcon" (click)="onOpenRecycleBin()" data-drag="true">
+    <img src="/public/recycle-bin-icon-16264.png" alt="Recycle Bin" />
+    <span>Recycle Bin</span>
+  </div>
+
+  <div class="icon desktop-icon" id="ieIcon" (click)="onOpenInternetExplorer()" data-drag="true">
+    <img src="/public/planet-icon-14821.png" alt="Internet Explorer" />
+    <span>Internet Explorer</span>
+  </div>
+
+  <div class="icon about-me" id="aboutMeIcon" (click)="onOpenAboutMe()" data-drag="true">
+    <img src="/public/swaraj.jpg" alt="About Me" />
+    <span>About Me</span>
+  </div>
+
+  <div class="icon desktop-icon" id="winampIcon" (click)="onOpenWinamp()" data-drag="true">
+    <img src="/public/winamp.png" alt="Winamp" />
+    <span>Winamp</span>
+  </div>
+
+  <!-- NOTEPAD WINDOW -->
+  <div class="window hidden" id="notepadWindow">
+    <div class="title-bar" id="notepadHeader">
+      <span>notes.txt</span>
+      <button id="closeNotepad">×</button>
+    </div>
+
+    <div class="window-body">
+      <textarea id="notepadContent" title="Notes text area"></textarea>
+    </div>
+  </div>
+
+  <!-- SNAKE GAME -->
+  <app-snake-game #snake (minimize)="minimizeApp('snake', 'Snake', snake)"></app-snake-game>
+  <app-doom-game #doom (minimize)="minimizeApp('doom', 'DOOM', doom)"></app-doom-game>
+
+  <!-- CALCULATOR -->
+  <app-calculator #calculator
+    (minimize)="minimizeApp('calculator', 'Calculator', calculator)">
+  </app-calculator>
+
+  <!-- MINESWEEPER -->
+  <app-minesweeper #minesweeper
+    (minimize)="minimizeApp('minesweeper', 'Minesweeper', minesweeper)">
+  </app-minesweeper>
+
+  <!-- MEMORY GAME -->
+  <app-memory-game #memoryGame 
+    (close)="onCloseMemoryGame()"
+    (minimize)="minimizeApp('memoryGame', 'Memory Game', memoryGame)">
+  </app-memory-game>
+
+  <!-- TETRIS -->
+  <app-tetris #tetris 
+    (close)="onCloseTetris()"
+    (minimize)="minimizeApp('tetris', 'Tetris', tetris)">
+  </app-tetris>
+
+  <!-- TASK MANAGER -->
+  <app-task-manager #taskManager 
+    [processes]="getTaskProcesses()"
+    (killProcess)="onKillProcess($event)"
+    (close)="onCloseTaskManager()"
+    (minimize)="minimizeApp('taskManager', 'Task Manager', taskManager)">
+  </app-task-manager>
+
+  <!-- TERMINAL -->
+  <app-terminal #terminal 
+    (close)="onCloseTerminal()"
+    (minimize)="minimizeApp('terminal', 'Command Prompt', terminal)">
+  </app-terminal>
+
+  <!-- MY COMPUTER -->
+  <app-my-computer
+    #myComputer
+    (minimize)="minimizeApp('myComputer', 'My Computer', myComputer)"
+    (openGamesDrive)="onOpenGamesExplorer()"
+    (openPhotosDrive)="onOpenPhotosExplorer()"
+  ></app-my-computer>
+
+  <!-- RECYCLE BIN -->
+  <app-recycle-bin #recycleBin (minimize)="minimizeApp('recycleBin', 'Recycle Bin', recycleBin)"></app-recycle-bin>
+
+  <!-- INTERNET EXPLORER -->
+  <app-internet-explorer #internetExplorer (minimize)="minimizeApp('internetExplorer', 'Internet Explorer', internetExplorer)"></app-internet-explorer>
+
+  <!-- GAMES EXPLORER -->
+  <app-games-explorer
+    #gamesExplorer
+    (minimize)="minimizeApp('gamesExplorer', 'S Games', gamesExplorer)"
+    (openSnakeGame)="onOpenSnakeGame()"
+    (openDoomGame)="onOpenDoomGame()"
+    (openMinesweeper)="onOpenMinesweeper()"
+    (openMemoryGame)="onOpenMemoryGame()"
+    (openTetris)="onOpenTetris()"
+  ></app-games-explorer>
+
+  <!-- PHOTOS EXPLORER -->
+  <app-photos-explorer
+    #photosExplorer
+    (minimize)="minimizeApp('photosExplorer', 'Photos', photosExplorer)"
+  ></app-photos-explorer>
+
+  <!-- ABOUT ME -->
+  <app-about-me
+    #aboutMe
+    [socialLinks]="socialLinks"
+    (minimize)="minimizeApp('aboutMe', 'About Me', aboutMe)"
+  ></app-about-me>
+
+  <!-- WINAMP -->
+  <app-winamp #winamp (minimize)="minimizeApp('winamp', 'Winamp', winamp)"></app-winamp>
+
+  <!-- WEATHER WIDGET -->
+  <app-weather-widget></app-weather-widget>
+</div>
+
+<app-start-menu
+  *ngIf="isLoggedIn"
+  [minimizedApps]="minimizedApps"
+    [socialLinks]="socialLinks"
+  (restoreApp)="restoreApp($event)"
+  (openSnakeGame)="onOpenSnakeGame()"
+  (openDoomGame)="onOpenDoomGame()"
+  (openCalculator)="onOpenCalculator()"
+  (openMinesweeper)="onOpenMinesweeper()"
+  (openMemoryGame)="onOpenMemoryGame()"
+  (openTetris)="onOpenTetris()"
+  (openTaskManager)="onOpenTaskManager()"
+  (openTerminal)="onOpenTerminal()"
+  (openMyComputer)="onOpenMyComputer()"
+  (openRecycleBin)="onOpenRecycleBin()"
+  (openInternetExplorer)="onOpenInternetExplorer()"
+  (openWinamp)="onOpenWinamp()"
+  (openAboutMe)="onOpenAboutMe()"
+  (wallpaperChange)="onWallpaperChange($event)"
+  (themeChange)="onThemeChange($event)"
+  (logOffClick)="onLogOff()">
+</app-start-menu>

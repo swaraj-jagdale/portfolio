@@ -1,0 +1,78 @@
+<app-xp-window
+  [title]="currentPage.title + ' - Internet Explorer'"
+  [isOpen]="isOpen"
+  [width]="600"
+  [left]="200"
+  [top]="80"
+  (minimize)="minimizeWindow()"
+  (close)="close()"
+>
+  <div class="window-content">
+    <div class="menu-bar">
+      <button class="menu-item">File</button>
+      <button class="menu-item">Edit</button>
+      <button class="menu-item">View</button>
+      <button class="menu-item">Favorites</button>
+      <button class="menu-item">Tools</button>
+      <button class="menu-item">Help</button>
+    </div>
+
+    <div class="tool-strip">
+      <button class="tool-btn" (click)="goBack()" [disabled]="!canGoBack">
+        <span class="tool-icon back"></span>
+        Back
+      </button>
+      <button class="tool-btn" (click)="goForward()" [disabled]="!canGoForward">
+        <span class="tool-icon forward"></span>
+        Forward
+      </button>
+      <button class="tool-btn" (click)="refresh()">
+        <span class="tool-icon refresh"></span>
+        Refresh
+      </button>
+      <button class="tool-btn">
+        <span class="tool-icon home"></span>
+        Home
+      </button>
+      <div class="tool-sep"></div>
+      <button class="tool-btn">
+        <span class="tool-icon search"></span>
+        Search
+      </button>
+      <button class="tool-btn">
+        <span class="tool-icon favorites"></span>
+        Favorites
+      </button>
+      <button class="tool-btn">
+        <span class="tool-icon history"></span>
+        History
+      </button>
+    </div>
+
+    <div class="address-bar">
+      <span class="address-label">Address</span>
+      <span class="address-icon"></span>
+      <input
+        type="text"
+        class="address-input"
+        [(ngModel)]="addressBarUrl"
+        (keyup.enter)="navigate()"
+        placeholder="Enter URL..."
+      />
+      <button class="go-btn" (click)="navigate()">Go</button>
+    </div>
+
+    <div class="browser-content">
+      <div class="loading-bar" *ngIf="isLoading">
+        <div class="loading-progress"></div>
+      </div>
+      
+      <div class="page-content" [innerHTML]="getSafeContent()"></div>
+    </div>
+
+    <div class="status-bar">
+      <span class="status-text">{{ isLoading ? 'Loading...' : 'Done' }}</span>
+      <span class="status-url">{{ currentUrl }}</span>
+    </div>
+  </div>
+</app-xp-window>

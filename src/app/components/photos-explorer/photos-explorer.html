@@ -1,0 +1,102 @@
+<app-xp-window
+  [title]="'Photos (D:)'"
+  [isOpen]="isOpen"
+  [width]="680"
+  [height]="500"
+  [left]="130"
+  [top]="90"
+  (minimize)="minimizeWindow()"
+  (close)="close()"
+>
+  <div class="xp-explorer">
+    <div class="xp-toolbar">
+      <button class="xp-tool-btn">
+        <span class="xp-tool-icon back"></span>
+        Back
+      </button>
+      <button class="xp-tool-btn">
+        <span class="xp-tool-icon forward"></span>
+        Forward
+      </button>
+      <button class="xp-tool-btn">
+        <span class="xp-tool-icon up"></span>
+        Up
+      </button>
+      <div class="xp-toolbar-sep"></div>
+      <button class="xp-tool-btn">
+        <span class="xp-tool-icon search"></span>
+        Search
+      </button>
+      <button class="xp-tool-btn">
+        <span class="xp-tool-icon folders"></span>
+        Folders
+      </button>
+    </div>
+
+    <div class="xp-address">
+      <span class="xp-address-label">Address</span>
+      <div class="xp-address-field">Photos (D:)</div>
+      <button class="xp-go-btn">Go</button>
+    </div>
+
+    <div class="xp-body">
+      <div class="xp-main">
+        <div class="xp-section">
+          <div class="xp-section-title">Photos</div>
+          <div class="xp-icon-grid">
+            <button
+              class="xp-icon-item"
+              type="button"
+              *ngFor="let photo of photos; let i = index"
+              (click)="openPhoto(i)"
+            >
+              <img
+                [src]="photo.url"
+                [alt]="photo.name"
+                title="{{ photo.name }}"
+                loading="lazy"
+                decoding="async"
+              />
+              <span>{{ photo.name }}</span>
+            </button>
+            <div class="xp-empty" *ngIf="!photos.length">
+              No photos found.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="xp-statusbar">
+      <span>Photos (D:)</span>
+      <span>{{ photos.length }} object(s)</span>
+    </div>
+  </div>
+</app-xp-window>
+
+<app-xp-window
+  [title]="currentPhoto?.name || 'Photo Viewer'"
+  [isOpen]="isViewerOpen"
+  [width]="520"
+  [height]="420"
+  [centered]="true"
+  [showMinimize]="false"
+  (close)="closeViewer()"
+>
+  <div class="photo-viewer">
+    <div class="photo-toolbar">
+      <button class="viewer-btn" (click)="prevPhoto()">◄ Previous</button>
+      <button class="viewer-btn" (click)="nextPhoto()">Next ►</button>
+    </div>
+    <div class="photo-frame">
+      <img
+        *ngIf="currentPhoto"
+        [src]="currentPhoto.url"
+        [alt]="currentPhoto.name"
+        title="{{ currentPhoto.name }}"
+        loading="eager"
+        decoding="async"
+      />
+    </div>
+  </div>
+</app-xp-window>

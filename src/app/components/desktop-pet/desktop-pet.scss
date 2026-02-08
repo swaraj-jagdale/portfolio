@@ -1,0 +1,56 @@
+.desktop-pet {
+  position: fixed;
+  width: 48px;
+  height: 48px;
+  z-index: 9999;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: top 0.2s ease, left 0.05s linear;
+  filter: grayscale(0.3);
+
+  &:hover {
+    filter: grayscale(0);
+    transform: scale(1.1);
+  }
+
+  &.facing-left {
+    transform: scaleX(-1);
+    
+    &:hover {
+      transform: scaleX(-1) scale(1.1);
+    }
+  }
+}
+
+.pet-sprite {
+  font-size: 48px;
+  line-height: 1;
+  animation: bounce 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes bounce {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-4px);
+  }
+}
+
+.pet-state {
+  position: absolute;
+  top: -16px;
+  right: -16px;
+  font-size: 20px;
+  animation: float 2s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}

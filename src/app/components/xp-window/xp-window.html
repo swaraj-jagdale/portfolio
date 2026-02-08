@@ -1,0 +1,39 @@
+<div
+  class="window"
+  #windowEl
+  [class.hidden]="!isOpen"
+  [class.maximized]="isMaximizedInternal"
+  [ngStyle]="windowStyle"
+>
+  <div class="title-bar" (pointerdown)="onTitlePointerDown($event)">
+    <span class="title">{{ title }}</span>
+    <div class="title-buttons">
+      <button
+        class="minimize-btn"
+        *ngIf="showMinimize"
+        (pointerdown)="onMinimize($event)"
+        title="Minimize"
+      >
+        _
+      </button>
+      <button
+        class="maximize-btn"
+        *ngIf="showMaximize"
+        (pointerdown)="onMaximize($event)"
+        title="Maximize"
+      >
+        □
+      </button>
+      <button
+        class="close-btn"
+        *ngIf="showClose"
+        (pointerdown)="onClose($event)"
+        title="Close"
+      >
+        ×
+      </button>
+    </div>
+  </div>
+
+  <ng-content></ng-content>
+</div>

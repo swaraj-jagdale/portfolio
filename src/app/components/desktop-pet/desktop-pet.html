@@ -1,0 +1,10 @@
+<div 
+  class="desktop-pet" 
+  [style.left.px]="x" 
+  [style.top.px]="y"
+  [class.facing-left]="!facingRight"
+  (click)="onPetClick()"
+>
+  <div class="pet-sprite">{{ getCurrentSprite() }}</div>
+  <div class="pet-state" *ngIf="state === 'sleeping'">💤</div>
+</div>

@@ -1,0 +1,12 @@
+<app-xp-window
+  [title]="'DOOM.EXE'"
+  [isOpen]="isOpen"
+  [width]="700"
+  [centered]="true"
+  (minimize)="minimizeWindow()"
+  (close)="close()"
+>
+  <canvas #canvas></canvas>
+
+  <div class="hint">W A S D / ↑ ↓ ← → — Move | SPACE / CLICK — Shoot</div>
+</app-xp-window>

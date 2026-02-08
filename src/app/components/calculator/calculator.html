@@ -1,0 +1,38 @@
+<app-xp-window
+  [title]="'Calculator'"
+  [isOpen]="isOpen"
+  [width]="320"
+  [left]="150"
+  [top]="150"
+  (minimize)="minimizeWindow()"
+  (close)="closeWindow()"
+>
+  <div class="calc-body">
+    <div class="display">{{ display }}</div>
+    <div class="buttons">
+      <button (click)="clear()" class="wide">CE</button>
+      <button (click)="backspace()">⌫</button>
+      <button (click)="toggleSign()">±</button>
+      <button (click)="appendOperation('/')" class="op">÷</button>
+      
+      <button (click)="appendNumber('7')">7</button>
+      <button (click)="appendNumber('8')">8</button>
+      <button (click)="appendNumber('9')">9</button>
+      <button (click)="appendOperation('*')" class="op">×</button>
+      
+      <button (click)="appendNumber('4')">4</button>
+      <button (click)="appendNumber('5')">5</button>
+      <button (click)="appendNumber('6')">6</button>
+      <button (click)="appendOperation('-')" class="op">−</button>
+      
+      <button (click)="appendNumber('1')">1</button>
+      <button (click)="appendNumber('2')">2</button>
+      <button (click)="appendNumber('3')">3</button>
+      <button (click)="appendOperation('+')" class="op">+</button>
+      
+      <button (click)="appendNumber('0')" class="wide">0</button>
+      <button (click)="appendNumber('.')">.</button>
+      <button (click)="equals()" class="op">=</button>
+    </div>
+  </div>
+</app-xp-window>

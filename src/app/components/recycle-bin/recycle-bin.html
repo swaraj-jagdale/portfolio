@@ -1,0 +1,42 @@
+<app-xp-window
+  [title]="'Recycle Bin'"
+  [isOpen]="isOpen"
+  [width]="450"
+  [left]="150"
+  [top]="120"
+  (minimize)="minimizeWindow()"
+  (close)="close()"
+>
+  <div class="window-content">
+    <div class="toolbar">
+      <button class="toolbar-btn" (click)="emptyBin()" [disabled]="items.length === 0 || isEmptying">
+        {{ isEmptying ? 'Emptying...' : 'Empty Recycle Bin' }}
+      </button>
+      <span class="item-count">{{ items.length }} item(s)</span>
+    </div>
+
+    <div class="items-container" *ngIf="items.length > 0">
+      <div class="recycle-item" *ngFor="let item of items">
+        <div class="item-icon">{{ item.type === 'file' ? '📄' : '📁' }}</div>
+        <div class="item-details">
+          <div class="item-name">{{ item.name }}</div>
+          <div class="item-date">Deleted: {{ item.deletedDate }}</div>
+        </div>
+        <div class="item-actions">
+          <button class="action-btn" (click)="restoreItem(item)">Restore</button>
+          <button class="action-btn delete" (click)="deleteItemPermanently(item)">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="items.length === 0 && !isEmptying">
+      <div class="empty-icon">🗑️</div>
+      <div class="empty-message">Recycle Bin is empty</div>
+    </div>
+
+    <div class="emptying-animation" *ngIf="isEmptying">
+      <div class="spinner">⟳</div>
+      <div class="emptying-text">Emptying Recycle Bin...</div>
+    </div>
+  </div>
+</app-xp-window>

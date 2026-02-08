@@ -1,0 +1,31 @@
+<app-xp-window
+  [title]="'Task Manager'"
+  [isOpen]="isOpen"
+  [width]="520"
+  [left]="180"
+  [top]="140"
+  (minimize)="minimizeWindow()"
+  (close)="closeWindow()"
+>
+  <div class="task-body">
+    <div class="task-list">
+      <div class="header">
+        <div class="col-name">Process Name</div>
+        <div class="col-memory">Memory</div>
+      </div>
+      <div
+        *ngFor="let proc of processes"
+        [ngClass]="{ selected: selectedId === proc.id }"
+        (click)="selectProcess(proc.id)"
+        class="task-row"
+      >
+        <div class="col-name">{{ proc.name }}</div>
+        <div class="col-memory">{{ proc.memory }}</div>
+      </div>
+    </div>
+    <div class="button-bar">
+      <button (click)="endProcess()" [disabled]="!selectedId" class="btn">End Process</button>
+      <button (click)="closeWindow()" class="btn">Close</button>
+    </div>
+  </div>
+</app-xp-window>
