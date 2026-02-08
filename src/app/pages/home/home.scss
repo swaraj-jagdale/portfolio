@@ -236,6 +236,12 @@ app-root,
   justify-content: center;
   color: #ffffff;
   font-family: Tahoma, 'MS Sans Serif', Arial, sans-serif;
+  opacity: 1;
+  transition: opacity 350ms ease;
+}
+
+.xp-boot.is-fading {
+  opacity: 0;
 }
 
 .xp-boot-center {

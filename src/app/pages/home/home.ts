@@ -79,6 +79,8 @@ export class HomeComponent implements AfterViewInit, OnInit {
   private timeInterval?: number;
   private isBrowser: boolean;
   private static wallpaperInitialized = false;
+  // Add fade state
+  isBootFading = false;
 
   // Taskbar minimized apps
   minimizedApps: Array<{
@@ -122,8 +124,6 @@ export class HomeComponent implements AfterViewInit, OnInit {
     if (this.isBrowser) {
       const hasBooted = sessionStorage.getItem('hasBooted') === 'true';
       this.isBooting = !hasBooted;
-      const savedLoginState = sessionStorage.getItem('isLoggedIn');
-      this.isLoggedIn = savedLoginState === 'true';
       this.updateClock();
       this.ngZone.runOutsideAngular(() => {
         this.timeInterval = window.setInterval(() => {
@@ -135,9 +135,14 @@ export class HomeComponent implements AfterViewInit, OnInit {
       });
       if (!hasBooted) {
         window.setTimeout(() => {
-          this.isBooting = false;
-          sessionStorage.setItem('hasBooted', 'true');
+          this.isBootFading = true;
           this.cdr.markForCheck();
+          window.setTimeout(() => {
+            this.isBooting = false;
+            this.isBootFading = false;
+            sessionStorage.setItem('hasBooted', 'true');
+            this.cdr.markForCheck();
+          }, 350);
         }, 2000);
       }
     }
@@ -161,7 +166,6 @@ export class HomeComponent implements AfterViewInit, OnInit {
   onLogin() {
     if (!this.isBrowser || this.isLoggedIn) return;
     this.isLoggedIn = true;
-    sessionStorage.setItem('isLoggedIn', 'true');
     this.playStartupSound();
   }
 
@@ -170,7 +174,6 @@ export class HomeComponent implements AfterViewInit, OnInit {
     this.isBooting = false;
     this.isLoggedIn = false;
     this.loginPassword = '';
-    sessionStorage.setItem('isLoggedIn', 'false');
     this.cdr.markForCheck();
   }
 
