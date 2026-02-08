@@ -217,18 +217,38 @@ export class TetrisComponent implements AfterViewInit, OnDestroy {
     if (!this.gameStarted || this.gameOver) return;
     switch (event.key) {
       case 'ArrowLeft':
-        this.movePiece(-1);
+        this.onMoveLeft();
         break;
       case 'ArrowRight':
-        this.movePiece(1);
+        this.onMoveRight();
         break;
       case 'ArrowUp':
-        this.rotatePiece();
+        this.onRotate();
         break;
       case 'ArrowDown':
-        this.dropPiece();
+        this.onDrop();
         break;
     }
+  }
+
+  onMoveLeft() {
+    if (!this.gameStarted || this.gameOver) return;
+    this.movePiece(-1);
+  }
+
+  onMoveRight() {
+    if (!this.gameStarted || this.gameOver) return;
+    this.movePiece(1);
+  }
+
+  onRotate() {
+    if (!this.gameStarted || this.gameOver) return;
+    this.rotatePiece();
+  }
+
+  onDrop() {
+    if (!this.gameStarted || this.gameOver) return;
+    this.dropPiece();
   }
 
   getCellClass(x: number, y: number): string {

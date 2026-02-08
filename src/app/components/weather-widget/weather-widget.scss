@@ -92,3 +92,9 @@
   font-size: 10px;
   color: #5b6c88;
 }
+
+@media (max-width: 900px) {
+  .xp-weather {
+    display: none;
+  }
+}

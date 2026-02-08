@@ -96,12 +96,19 @@ export class WeatherWidgetComponent implements OnDestroy, OnInit {
       };
     }
 
-    const response = await fetch('https://ipapi.co/json/');
+    const response = await fetch(
+      'https://ipwho.is/?fields=success,latitude,longitude,city,region,country'
+    );
     if (!response.ok) {
       throw new Error('IP location failed');
     }
     const data = await response.json();
-    const locationName = [data.city, data.region, data.country_name]
+
+    if (!data?.success) {
+      throw new Error('IP location failed');
+    }
+
+    const locationName = [data.city, data.region, data.country]
       .filter(Boolean)
       .join(', ');
 

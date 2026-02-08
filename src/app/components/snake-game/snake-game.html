@@ -20,5 +20,20 @@
     <div class="instructions">
       <p>Use Arrow Keys to move</p>
     </div>
+
+    <div class="mobile-controls" aria-label="Snake controls">
+      <button class="control-btn up" type="button" (pointerdown)="onControl('UP')" aria-label="Up">
+        ▲
+      </button>
+      <button class="control-btn left" type="button" (pointerdown)="onControl('LEFT')" aria-label="Left">
+        ◀
+      </button>
+      <button class="control-btn right" type="button" (pointerdown)="onControl('RIGHT')" aria-label="Right">
+        ▶
+      </button>
+      <button class="control-btn down" type="button" (pointerdown)="onControl('DOWN')" aria-label="Down">
+        ▼
+      </button>
+    </div>
   </div>
 </app-xp-window>

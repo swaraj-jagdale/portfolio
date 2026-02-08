@@ -20,6 +20,8 @@ import { PhotosExplorerComponent } from '../../components/photos-explorer/photos
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { XpWindowComponent } from '../../components/xp-window/xp-window';
+import { SessionStateService } from '../../state/session-state.service';
 
 @Component({
   selector: 'app-home',
@@ -47,6 +49,7 @@ import { FormsModule } from '@angular/forms';
     AboutMeComponent,
     GamesExplorerComponent,
     PhotosExplorerComponent,
+    XpWindowComponent,
   ],
 })
 export class HomeComponent implements AfterViewInit, OnInit {
@@ -81,6 +84,8 @@ export class HomeComponent implements AfterViewInit, OnInit {
   private static wallpaperInitialized = false;
   // Add fade state
   isBootFading = false;
+  isNotepadOpen = false;
+  notepadText = 'some thoughts were never meant to be solved.\nonly sat with.';
 
   // Taskbar minimized apps
   minimizedApps: Array<{
@@ -110,7 +115,8 @@ export class HomeComponent implements AfterViewInit, OnInit {
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private ngZone: NgZone,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private sessionState: SessionStateService
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
@@ -122,8 +128,8 @@ export class HomeComponent implements AfterViewInit, OnInit {
 
   ngOnInit() {
     if (this.isBrowser) {
-      const hasBooted = sessionStorage.getItem('hasBooted') === 'true';
-      this.isBooting = !hasBooted;
+      this.isBooting = !this.sessionState.hasBooted;
+      this.isLoggedIn = this.sessionState.isLoggedIn;
       this.updateClock();
       this.ngZone.runOutsideAngular(() => {
         this.timeInterval = window.setInterval(() => {
@@ -133,14 +139,14 @@ export class HomeComponent implements AfterViewInit, OnInit {
           });
         }, 1000);
       });
-      if (!hasBooted) {
+      if (!this.sessionState.hasBooted) {
         window.setTimeout(() => {
           this.isBootFading = true;
           this.cdr.markForCheck();
           window.setTimeout(() => {
             this.isBooting = false;
             this.isBootFading = false;
-            sessionStorage.setItem('hasBooted', 'true');
+            this.sessionState.hasBooted = true;
             this.cdr.markForCheck();
           }, 350);
         }, 2000);
@@ -157,7 +163,6 @@ export class HomeComponent implements AfterViewInit, OnInit {
   ngAfterViewInit() {
     if (this.isBrowser) {
       this.enableDragging();
-      this.initNotepad();
       this.loadWallpaper();
       this.setupKeyboardShortcuts();
     }
@@ -166,6 +171,7 @@ export class HomeComponent implements AfterViewInit, OnInit {
   onLogin() {
     if (!this.isBrowser || this.isLoggedIn) return;
     this.isLoggedIn = true;
+    this.sessionState.isLoggedIn = true;
     this.playStartupSound();
   }
 
@@ -174,6 +180,7 @@ export class HomeComponent implements AfterViewInit, OnInit {
     this.isBooting = false;
     this.isLoggedIn = false;
     this.loginPassword = '';
+    this.sessionState.isLoggedIn = false;
     this.cdr.markForCheck();
   }
 
@@ -201,6 +208,7 @@ export class HomeComponent implements AfterViewInit, OnInit {
   }
 
   private enableDragging() {
+    if (!this.isBrowser) return;
     const icons = document.querySelectorAll<HTMLElement>('[data-drag="true"]');
 
     icons.forEach((icon) => {
@@ -255,69 +263,14 @@ export class HomeComponent implements AfterViewInit, OnInit {
       }, true);
     });
   }
-  private initNotepad() {
-    const icon = document.getElementById('notesIcon') as HTMLElement;
-    const windowEl = document.getElementById('notepadWindow') as HTMLElement;
-    const header = document.getElementById('notepadHeader') as HTMLElement;
-    const closeBtn = document.getElementById('closeNotepad') as HTMLElement;
-    const textarea = document.getElementById('notepadContent') as HTMLTextAreaElement;
+  onOpenNotepad() {
+    if (!this.isBrowser) return;
+    this.isNotepadOpen = true;
+  }
 
-    if (!icon || !windowEl || !header || !closeBtn || !textarea) return;
-
-    textarea.value = 'some thoughts were never meant to be solved.\nonly sat with.';
-
-    /* OPEN - single click */
-    icon.addEventListener('click', (e: MouseEvent) => {
-      windowEl.classList.remove('hidden');
-      windowEl.style.zIndex = String(Date.now());
-      textarea.focus();
-    });
-
-    /* CLOSE (force safe close) */
-    closeBtn.addEventListener('pointerdown', (e) => {
-      e.stopPropagation();
-      e.preventDefault();
-      windowEl.classList.add('hidden');
-    });
-
-    /* BRING TO FRONT */
-    windowEl.addEventListener('pointerdown', () => {
-      windowEl.style.zIndex = String(Date.now());
-    });
-
-    /* DRAG WINDOW */
-    let isDragging = false;
-    let offsetX = 0;
-    let offsetY = 0;
-
-    header.addEventListener('pointerdown', (e: PointerEvent) => {
-      e.preventDefault();
-      isDragging = true;
-
-      offsetX = e.clientX - windowEl.offsetLeft;
-      offsetY = e.clientY - windowEl.offsetTop;
-
-      header.setPointerCapture(e.pointerId);
-      windowEl.style.zIndex = String(Date.now());
-    });
-
-    header.addEventListener('pointermove', (e: PointerEvent) => {
-      if (!isDragging) return;
-
-      windowEl.style.left = e.clientX - offsetX + 'px';
-      windowEl.style.top = e.clientY - offsetY + 'px';
-    });
-
-    const stopDrag = (e: PointerEvent) => {
-      if (!isDragging) return;
-      isDragging = false;
-      try {
-        header.releasePointerCapture(e.pointerId);
-      } catch {}
-    };
-
-    header.addEventListener('pointerup', stopDrag);
-    header.addEventListener('pointercancel', stopDrag);
+  onCloseNotepad() {
+    if (!this.isBrowser) return;
+    this.isNotepadOpen = false;
   }
 
   onOpenSnakeGame() {
@@ -444,19 +397,23 @@ export class HomeComponent implements AfterViewInit, OnInit {
   }
 
   onCloseTaskManager() {
-    this.taskManager.closeWindow();
+    this.taskManager.isOpen = false;
+    this.taskManager.isMinimized = false;
   }
 
   onCloseTerminal() {
-    this.terminal.closeWindow();
+    this.terminal.isOpen = false;
+    this.terminal.isMinimized = false;
   }
 
   onCloseMemoryGame() {
-    this.memoryGame.closeWindow();
+    this.memoryGame.isOpen = false;
+    this.memoryGame.isMinimized = false;
   }
 
   onCloseTetris() {
-    this.tetris.closeWindow();
+    this.tetris.isOpen = false;
+    this.tetris.isMinimized = false;
   }
 
   // Minimize/Restore methods

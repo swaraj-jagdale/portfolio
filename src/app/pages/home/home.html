@@ -36,10 +36,10 @@
         </div>
         <div class="xp-login-logo-text">
           <div class="xp-login-title">
-            <span class="xp-login-name">NuThoughts</span>
+            <span class="xp-login-name">Windows</span>
             <span class="xp-login-xp">xp</span>
           </div>
-          <div class="xp-login-role">Visual Designer</div>
+          <div class="xp-login-role">SP3</div>
         </div>
       </div>
     </div>
@@ -49,7 +49,7 @@
         <img src="/public/me.png" alt="User" width="64" height="64" />
         <div class="xp-login-user-info">
           <div class="xp-login-user-name">Swaraj Jagdale</div>
-          <div class="xp-login-user-role">Visual Designer</div>
+          <div class="xp-login-user-role">Administrator</div>
         </div>
       </div>
       <div class="xp-login-instructions">To begin, click on Swaraj Jagdale to log in</div>
@@ -59,7 +59,7 @@
   <div class="xp-login-footer">
     <div class="xp-login-footer-left">
       <span class="xp-login-power"></span>
-      <span>Restart NuThoughts XP</span>
+      <span>Restart Windows XP</span>
     </div>
     <div class="xp-login-footer-right">
       After you log on, the system's yours to explore.
@@ -68,7 +68,7 @@
   </div>
 </div>
 
-<div class="desktop" [class.is-locked]="isBooting || !isLoggedIn">
+<div class="desktop" *ngIf="isLoggedIn" [class.is-locked]="isBooting || !isLoggedIn">
   <a class="icon black-folder" routerLink="/black-folder" data-drag="true">
     <img src="/public/black-folder.png" alt="Black folder" />
     <span class="sr-only">Master</span>
@@ -85,7 +85,7 @@
   </a>
 
   <!-- TXT FILE ICON -->
-  <div class="icon txt-file" id="notesIcon" data-drag="true">
+  <div class="icon txt-file" id="notesIcon" data-drag="true" (click)="onOpenNotepad()">
     <img src="/public/notepad.png" alt="notes.txt" />
     <span>notes.txt</span>
   </div>
@@ -112,7 +112,7 @@
   </div>
 
   <div class="icon about-me" id="aboutMeIcon" (click)="onOpenAboutMe()" data-drag="true">
-    <img src="/public/swaraj.jpg" alt="About Me" />
+    <img src="/public/swaraj.jpg" alt="About Me" width="64" height="64" />
     <span>About Me</span>
   </div>
 
@@ -122,16 +122,23 @@
   </div>
 
   <!-- NOTEPAD WINDOW -->
-  <div class="window hidden" id="notepadWindow">
-    <div class="title-bar" id="notepadHeader">
-      <span>notes.txt</span>
-      <button id="closeNotepad">×</button>
-    </div>
-
+  <app-xp-window
+    [title]="'notes.txt'"
+    [isOpen]="isNotepadOpen"
+    [width]="380"
+    [height]="260"
+    [left]="120"
+    [top]="120"
+    (close)="onCloseNotepad()"
+  >
     <div class="window-body">
-      <textarea id="notepadContent" title="Notes text area"></textarea>
+      <textarea
+        id="notepadContent"
+        title="Notes text area"
+        [(ngModel)]="notepadText"
+      ></textarea>
     </div>
-  </div>
+  </app-xp-window>
 
   <!-- SNAKE GAME -->
   <app-snake-game #snake (minimize)="minimizeApp('snake', 'Snake', snake)"></app-snake-game>

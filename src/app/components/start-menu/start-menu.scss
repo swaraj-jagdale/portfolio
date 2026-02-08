@@ -3,7 +3,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 40px;
+  height: var(--xp-taskbar-height);
   background: linear-gradient(180deg, #3b7ddd 0%, #1f4f9d 55%, #18438f 100%);
   border-top: 1px solid #6ea1e6;
   border-bottom: 1px solid #0f2f63;
@@ -16,7 +16,7 @@
 }
 
 .start-button {
-  height: 40px;
+  height: var(--xp-taskbar-height);
   padding: 0 16px 0 12px;
   margin: 0;
   background: linear-gradient(180deg, #6dcf4f 0%, #3c8f2e 55%, #2e7a25 100%);
@@ -377,7 +377,7 @@
   padding: 0 10px;
   margin-left: auto;
   gap: 6px;
-  height: 40px;
+  height: var(--xp-taskbar-height);
   background: linear-gradient(180deg, #3a7bd7 0%, #2c65b8 60%, #2457a5 100%);
   border-left: 1px solid #1d3f7b;
   box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.25);
@@ -577,5 +577,60 @@
   .submenu.open,
   .volume-popup.open {
     animation: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .taskbar {
+    height: calc(var(--xp-taskbar-height) + var(--xp-safe-bottom));
+    padding-bottom: var(--xp-safe-bottom);
+    gap: 4px;
+  }
+
+  .start-button {
+    padding: 0 10px;
+    font-size: 13px;
+  }
+
+  .taskbar-buttons {
+    max-width: 45vw;
+  }
+
+  .start-menu {
+    width: calc(100vw - 12px);
+    left: 6px;
+    right: 6px;
+    bottom: calc(var(--xp-taskbar-height) + var(--xp-safe-bottom) + 4px);
+    max-height: calc(100vh - var(--xp-taskbar-height) - var(--xp-safe-bottom) - 12px);
+  }
+
+  .menu-body {
+    grid-template-columns: 1fr;
+  }
+
+  .menu-right {
+    border-top: 1px solid #9fb6e5;
+  }
+
+  .submenu {
+    position: fixed;
+    left: 8px;
+    right: 8px;
+    top: 80px;
+    width: auto;
+    max-height: calc(100vh - var(--xp-taskbar-height) - var(--xp-safe-bottom) - 96px);
+  }
+
+  .system-tray {
+    padding: 0 6px;
+    gap: 4px;
+  }
+
+  .tray-widget {
+    padding: 2px 4px;
+  }
+
+  .battery-widget {
+    min-width: 58px;
   }
 }

@@ -1,4 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+  --xp-taskbar-height: 40px;
+  --xp-mobile-taskbar-height: 52px;
+  --xp-safe-top: env(safe-area-inset-top, 0px);
+  --xp-safe-right: env(safe-area-inset-right, 0px);
+  --xp-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --xp-safe-left: env(safe-area-inset-left, 0px);
+}
+
 html,
 body {
   height: 100%;
@@ -61,25 +70,28 @@ app-root {
 }
 
 @media (max-width: 900px) {
+  :root {
+    --xp-taskbar-height: var(--xp-mobile-taskbar-height);
+  }
+
   html,
   body {
-    overflow: auto;
+    overflow: hidden;
   }
 
   body {
-    touch-action: pan-x pan-y;
+    touch-action: auto;
   }
 
   .window {
-    width: calc(100vw - 24px) !important;
-    max-width: 100% !important;
+    max-width: calc(100vw - 24px) !important;
+    max-height: calc(100vh - var(--xp-taskbar-height) - var(--xp-safe-bottom) - 24px) !important;
     height: auto !important;
-    max-height: calc(100vh - 140px) !important;
   }
 
   .window .window-body,
   .window .window-content {
-    max-height: calc(100vh - 200px);
+    max-height: calc(100vh - var(--xp-taskbar-height) - var(--xp-safe-bottom) - 84px);
     overflow: auto;
   }
 
@@ -87,4 +99,12 @@ app-root {
     min-width: 36px;
     min-height: 32px;
   }
+}
+
+.window img,
+.window video,
+.window canvas,
+.window iframe {
+  max-width: 100%;
+  height: auto;
 }

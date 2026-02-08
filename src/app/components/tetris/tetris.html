@@ -33,5 +33,29 @@
         </div>
       </div>
     </div>
+
+    <div class="mobile-controls" aria-label="Tetris controls">
+      <button class="control-btn left" type="button" (pointerdown)="onMoveLeft()" aria-label="Left">
+        ◀
+      </button>
+      <button class="control-btn rotate" type="button" (pointerdown)="onRotate()" aria-label="Rotate">
+        ⟳
+      </button>
+      <button class="control-btn right" type="button" (pointerdown)="onMoveRight()" aria-label="Right">
+        ▶
+      </button>
+      <button class="control-btn down" type="button" (pointerdown)="onDrop()" aria-label="Drop">
+        ▼
+      </button>
+      <button
+        class="control-btn start"
+        type="button"
+        *ngIf="!gameStarted"
+        (click)="startGame()"
+        aria-label="Start"
+      >
+        Start
+      </button>
+    </div>
   </div>
 </app-xp-window>

@@ -59,6 +59,22 @@ export class XpWindowComponent implements OnChanges {
       };
     }
 
+    if (this.isMobileLayout()) {
+      const widthValue = this.normalizeSize(this.width);
+      const heightValue = this.height !== undefined ? this.normalizeSize(this.height) : '';
+      return {
+        width: widthValue ? `min(${widthValue}, calc(100vw - 24px))` : 'auto',
+        maxWidth: 'calc(100vw - 24px)',
+        height: heightValue
+          ? `min(${heightValue}, calc(100vh - var(--xp-taskbar-height) - var(--xp-safe-bottom) - 24px))`
+          : 'auto',
+        maxHeight: 'calc(100vh - var(--xp-taskbar-height) - var(--xp-safe-bottom) - 24px)',
+        left: '12px',
+        top: 'calc(var(--xp-safe-top) + 12px)',
+        '--window-transform': 'none',
+      };
+    }
+
     const widthValue = this.normalizeSize(this.width);
     const heightValue = this.height !== undefined ? this.normalizeSize(this.height) : '';
     const leftValue = this.dragOverride
@@ -74,8 +90,10 @@ export class XpWindowComponent implements OnChanges {
     const transformValue = this.dragOverride ? 'none' : this.centered ? 'translate(-50%, -50%)' : 'none';
 
     return {
-      width: widthValue,
-      height: heightValue,
+      width: widthValue ? `min(${widthValue}, calc(100vw - 24px))` : 'auto',
+      maxWidth: 'calc(100vw - 24px)',
+      height: heightValue ? `min(${heightValue}, calc(100vh - 80px))` : 'auto',
+      maxHeight: 'calc(100vh - 80px)',
       left: leftValue,
       top: topValue,
       '--window-transform': transformValue,
@@ -83,7 +101,7 @@ export class XpWindowComponent implements OnChanges {
   }
 
   onTitlePointerDown(event: PointerEvent) {
-    if (!this.isBrowser || event.button !== 0) return;
+    if (!this.isBrowser || this.isMobileLayout() || event.button !== 0) return;
 
     const windowEl = this.windowEl?.nativeElement;
     if (!windowEl) return;
@@ -172,4 +190,9 @@ export class XpWindowComponent implements OnChanges {
     }
     return value;
   }
+
+  private isMobileLayout(): boolean {
+    return this.isBrowser && window.matchMedia('(max-width: 900px)').matches;
+  }
+
 }

@@ -2,6 +2,9 @@
   background: #f2f2f2;
   font-family: Tahoma, 'MS Sans Serif', Arial, sans-serif;
   color: #0b1e3a;
+  display: flex;
+  flex-direction: column;
+  height: 550px;
 }
 
 .xp-menubar {
@@ -116,6 +119,11 @@
   grid-template-columns: 220px 1fr;
   min-height: 520px;
   background: linear-gradient(180deg, #f7f9ff 0%, #e9effa 100%);
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
 }
 
 .xp-sidebar {
@@ -185,7 +193,7 @@
   );
   color: #ffffff;
   padding: 18px;
-  overflow: auto;
+  overflow: visible;
 }
 
 .xp-main-inner {
@@ -205,6 +213,10 @@
 }
 
 @media (max-width: 900px) {
+  .xp-content {
+    min-height: 0;
+  }
+
   .xp-content {
     grid-template-columns: 1fr;
   }

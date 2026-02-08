@@ -161,6 +161,20 @@ export class SnakeGameComponent implements AfterViewInit, OnDestroy {
 
     e.preventDefault();
 
+    const directionMap: Record<string, 'UP' | 'DOWN' | 'LEFT' | 'RIGHT'> = {
+      ArrowUp: 'UP',
+      ArrowDown: 'DOWN',
+      ArrowLeft: 'LEFT',
+      ArrowRight: 'RIGHT',
+    };
+
+    const direction = directionMap[e.key];
+    if (direction) {
+      this.onControl(direction);
+    }
+  };
+
+  onControl(direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') {
     if (this.gameOver()) {
       this.resetGame();
       this.startGame();
@@ -170,13 +184,13 @@ export class SnakeGameComponent implements AfterViewInit, OnDestroy {
 
     this.gameStarted.set(true);
 
-    if (e.key === 'ArrowUp' && this.direction !== 'DOWN') this.nextDirection = 'UP';
-    if (e.key === 'ArrowDown' && this.direction !== 'UP') this.nextDirection = 'DOWN';
-    if (e.key === 'ArrowLeft' && this.direction !== 'RIGHT') this.nextDirection = 'LEFT';
-    if (e.key === 'ArrowRight' && this.direction !== 'LEFT') this.nextDirection = 'RIGHT';
+    if (direction === 'UP' && this.direction !== 'DOWN') this.nextDirection = 'UP';
+    if (direction === 'DOWN' && this.direction !== 'UP') this.nextDirection = 'DOWN';
+    if (direction === 'LEFT' && this.direction !== 'RIGHT') this.nextDirection = 'LEFT';
+    if (direction === 'RIGHT' && this.direction !== 'LEFT') this.nextDirection = 'RIGHT';
 
     if (!this.gameInterval) this.startGame();
-  };
+  }
 
   /* -------------------- MECHANICS -------------------- */
 

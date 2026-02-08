@@ -33,3 +33,23 @@
   text-transform: lowercase;
   letter-spacing: 0.04em;
 }
+
+.construction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: calc(100vh - 120px);
+  text-align: center;
+}
+
+.construction-emoji {
+  font-size: 40px;
+}
+
+.construction-text {
+  font-size: 18px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}

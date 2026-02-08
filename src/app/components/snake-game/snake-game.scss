@@ -48,3 +48,57 @@ canvas {
     margin: 0;
   }
 }
+
+.mobile-controls {
+  display: none;
+  margin-top: 12px;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: 56px 56px 56px;
+  grid-template-rows: 56px 56px;
+  grid-template-areas:
+    ". up ."
+    "left down right";
+}
+
+.control-btn {
+  width: 56px;
+  height: 56px;
+  border: 1px solid #0f2f63;
+  background: linear-gradient(180deg, #ffffff 0%, #dbe7fb 100%);
+  color: #0f2f63;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 6px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  touch-action: manipulation;
+}
+
+.control-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.control-btn.up {
+  grid-area: up;
+}
+
+.control-btn.left {
+  grid-area: left;
+}
+
+.control-btn.right {
+  grid-area: right;
+}
+
+.control-btn.down {
+  grid-area: down;
+}
+
+@media (max-width: 900px) {
+  .mobile-controls {
+    display: grid;
+  }
+}
