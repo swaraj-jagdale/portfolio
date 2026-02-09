@@ -4,7 +4,6 @@
   color: #0b1e3a;
   display: flex;
   flex-direction: column;
-  height: 550px;
 }
 
 .xp-menubar {
@@ -117,7 +116,6 @@
 .xp-content {
   display: grid;
   grid-template-columns: 220px 1fr;
-  min-height: 520px;
   background: linear-gradient(180deg, #f7f9ff 0%, #e9effa 100%);
   flex: 1;
   min-height: 0;
