@@ -22,26 +22,35 @@ export class AboutMeComponent {
   isMinimized = false;
 
   software: string[] = [
-    'Angular',
-    'TypeScript / JavaScript',
-    'Go (Golang)',
-    'Spring Boot / Java',
+    'Java',
     'Python',
+    'TypeScript / JavaScript',
+    'C++',
+    'Go (Golang)',
+    'Angular',
+    'Spring Boot',
+    'LangGraph / LangChain',
+    'MCP (Model Context Protocol)',
     'PyTorch / TensorFlow',
+    'Jenkins / CI/CD',
     'Cypress',
     'Docker',
-    'Git',
+    'Git / Linux',
   ];
 
   skills: string[] = [
+    'Agentic AI & LLM Workflows',
+    'System Design & Distributed Systems',
+    'Backend Engineering (Java / Python)',
+    'REST APIs & Microservices',
     'Full-Stack Development',
-    'Frontend & Backend Architecture',
-    'REST API & Microservices',
-    'Concurrent Programming (Go)',
+    'Frontend Architecture (Angular)',
+    'RAG & Vector Databases',
     'Performance Optimization',
-    'Test Automation',
-    'AI & Deep Learning',
-    'System Design',
+    'CI/CD Automation',
+    'Test Automation (Cypress / JUnit)',
+    'Deep Learning & Computer Vision',
+    'Research & Applied ML',
   ];
 
   windowWidth: number | string = 980;
@@ -67,5 +76,9 @@ export class AboutMeComponent {
   restore() {
     this.isOpen = true;
     this.isMinimized = false;
+  }
+
+  openResume() {
+    window.open('/public/Resume.pdf', '_blank');
   }
 }

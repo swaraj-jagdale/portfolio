@@ -1,4 +1,13 @@
-import { Component, Inject, PLATFORM_ID, OnDestroy, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  Inject,
+  PLATFORM_ID,
+  OnDestroy,
+  Output,
+  EventEmitter,
+  NgZone,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { XpWindowComponent } from '../xp-window/xp-window';
@@ -28,9 +37,9 @@ export class WinampComponent implements OnDestroy {
   currentTime = '00:00';
   seekValue = 0;
   isMinimized = false;
-  
+
   private isBrowser: boolean;
-  private visualizerRafId?: number;
+  private visualizerIntervalId?: number;
   private audio?: HTMLAudioElement;
   private currentAudioSrc = '';
   private audioContext?: AudioContext;
@@ -59,15 +68,20 @@ export class WinampComponent implements OnDestroy {
     };
   });
 
-  visualizerBars: number[] = Array(16).fill(0);
+  visualizerBars: number[] = Array(64).fill(0);
+  private peakBars: number[] = Array(64).fill(0);
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private ngZone: NgZone,
+    private cdr: ChangeDetectorRef,
+  ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
   ngOnDestroy() {
-    if (this.visualizerRafId) {
-      cancelAnimationFrame(this.visualizerRafId);
+    if (this.visualizerIntervalId) {
+      clearInterval(this.visualizerIntervalId);
     }
     if (this.audio) {
       this.audio.pause();
@@ -158,45 +172,71 @@ export class WinampComponent implements OnDestroy {
   }
 
   private startVisualizer() {
-    if (!this.isBrowser || this.visualizerRafId) return;
+    if (!this.isBrowser || this.visualizerIntervalId) return;
 
-    const tick = () => {
-      if (this.analyser && this.analyserData) {
-        if (this.isPlaying) {
-          const data = this.analyserData as Uint8Array<ArrayBuffer>;
-          this.analyser.getByteFrequencyData(data);
-          const bucketCount = this.visualizerBars.length;
-          const bucketSize = Math.max(1, Math.floor(data.length / bucketCount));
-          this.visualizerBars = this.visualizerBars.map((_, index) => {
-            let sum = 0;
-            const start = index * bucketSize;
-            const end = Math.min(start + bucketSize, data.length);
-            for (let i = start; i < end; i += 1) {
-              sum += data[i];
+    let lastUIUpdate = 0;
+    const uiUpdateInterval = 16; // ~60fps
+
+    this.ngZone.runOutsideAngular(() => {
+      const tick = () => {
+        if (this.analyser && this.analyserData) {
+          const now = performance.now();
+          const shouldUpdateUI = now - lastUIUpdate >= uiUpdateInterval;
+
+          if (this.isPlaying) {
+            const data = this.analyserData as Uint8Array<ArrayBuffer>;
+            this.analyser.getByteFrequencyData(data);
+            const bucketCount = this.visualizerBars.length;
+            const bucketSize = Math.max(1, Math.floor(data.length / bucketCount));
+            const newBars = this.visualizerBars.map((_, index) => {
+              let sum = 0;
+              const start = index * bucketSize;
+              const end = Math.min(start + bucketSize, data.length);
+              for (let i = start; i < end; i += 1) {
+                sum += data[i];
+              }
+              const avg = sum / Math.max(1, end - start);
+              const normalized = Math.pow(avg / 255, 0.65);
+              const boosted = Math.min(1, normalized * 2.0);
+              const height = Math.max(2, boosted * 100);
+
+              this.peakBars[index] = Math.max(this.peakBars[index] * 0.98, height);
+
+              return height;
+            });
+
+            if (shouldUpdateUI) {
+              this.ngZone.run(() => {
+                this.visualizerBars = newBars;
+                this.cdr.detectChanges();
+              });
+              lastUIUpdate = now;
             }
-            const avg = sum / Math.max(1, end - start);
-            const normalized = Math.pow(avg / 255, 0.55);
-            const boosted = Math.min(1, normalized * 2.8);
-            return Math.max(2, boosted * 100);
-          });
-        } else {
-          this.visualizerBars = this.visualizerBars.map(() => 0);
-        }
+          } else if (shouldUpdateUI) {
+            this.ngZone.run(() => {
+              this.visualizerBars = this.visualizerBars.map(() => 0);
+              this.cdr.detectChanges();
+            });
+            lastUIUpdate = now;
+          }
 
-        if (this.audio) {
-          this.currentTime = this.formatTime(this.audio.currentTime || 0);
-          if (Number.isFinite(this.audio.duration) && this.audio.duration > 0) {
-            this.seekValue = (this.audio.currentTime / this.audio.duration) * 100;
-          } else {
-            this.seekValue = 0;
+          if (this.audio && shouldUpdateUI) {
+            const audio = this.audio;
+            this.ngZone.run(() => {
+              this.currentTime = this.formatTime(audio.currentTime || 0);
+              if (Number.isFinite(audio.duration) && audio.duration > 0) {
+                this.seekValue = (audio.currentTime / audio.duration) * 100;
+              } else {
+                this.seekValue = 0;
+              }
+              this.cdr.detectChanges();
+            });
           }
         }
-      }
+      };
 
-      this.visualizerRafId = requestAnimationFrame(tick);
-    };
-
-    this.visualizerRafId = requestAnimationFrame(tick);
+      this.visualizerIntervalId = window.setInterval(tick, 10);
+    });
   }
 
   getCurrentTrack(): Track {
@@ -232,8 +272,10 @@ export class WinampComponent implements OnDestroy {
       }
       this.analyser = this.audioContext.createAnalyser();
       this.analyser.fftSize = 512;
-      this.analyser.smoothingTimeConstant = 0.05;
-      this.analyserData = new Uint8Array(this.analyser.frequencyBinCount) as Uint8Array<ArrayBuffer>;
+      this.analyser.smoothingTimeConstant = 0.4;
+      this.analyserData = new Uint8Array(
+        this.analyser.frequencyBinCount,
+      ) as Uint8Array<ArrayBuffer>;
       this.audioSource = this.audioContext.createMediaElementSource(this.audio);
       this.audioSource.connect(this.analyser);
       this.analyser.connect(this.audioContext.destination);
@@ -276,8 +318,6 @@ export class WinampComponent implements OnDestroy {
     const secs = Math.floor(seconds % 60);
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   }
-
-  
 
   onCloseClick(event: Event) {
     event.stopPropagation();

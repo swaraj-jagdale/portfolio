@@ -36,7 +36,7 @@ export class WeatherWidgetComponent implements OnDestroy, OnInit {
     icon: '⛅',
     location: 'Detecting location...',
     humidity: null,
-    wind: '--'
+    wind: '--',
   };
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
@@ -60,9 +60,12 @@ export class WeatherWidgetComponent implements OnDestroy, OnInit {
       clearTimeout(this.refreshTimeout);
     }
 
-    this.refreshTimeout = window.setTimeout(() => {
-      this.loadWeather();
-    }, 10 * 60 * 1000);
+    this.refreshTimeout = window.setTimeout(
+      () => {
+        this.loadWeather();
+      },
+      10 * 60 * 1000,
+    );
   }
 
   private async loadWeather() {
@@ -83,80 +86,11 @@ export class WeatherWidgetComponent implements OnDestroy, OnInit {
   }
 
   private async getLocation(): Promise<LocationData> {
-    const geoCoords = await this.getGeolocationCoords().catch(() => null);
-
-    if (geoCoords) {
-      const locationName = await this.reverseGeocode(geoCoords.latitude, geoCoords.longitude).catch(
-        () => 'Current Location'
-      );
-      return {
-        latitude: geoCoords.latitude,
-        longitude: geoCoords.longitude,
-        locationName,
-      };
-    }
-
-    const response = await fetch(
-      'https://ipwho.is/?fields=success,latitude,longitude,city,region,country'
-    );
-    if (!response.ok) {
-      throw new Error('IP location failed');
-    }
-    const data = await response.json();
-
-    if (!data?.success) {
-      throw new Error('IP location failed');
-    }
-
-    const locationName = [data.city, data.region, data.country]
-      .filter(Boolean)
-      .join(', ');
-
     return {
-      latitude: Number(data.latitude),
-      longitude: Number(data.longitude),
-      locationName: locationName || 'Unknown Location',
+      latitude: 12.9716,
+      longitude: 77.5946,
+      locationName: 'Bengaluru',
     };
-  }
-
-  private getGeolocationCoords(): Promise<{ latitude: number; longitude: number }> {
-    return new Promise((resolve, reject) => {
-      if (!navigator.geolocation) {
-        reject(new Error('Geolocation unavailable'));
-        return;
-      }
-
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          resolve({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          });
-        },
-        (error) => reject(error),
-        { timeout: 6000 }
-      );
-    });
-  }
-
-  private async reverseGeocode(latitude: number, longitude: number) {
-    const url = new URL('https://geocoding-api.open-meteo.com/v1/reverse');
-    url.searchParams.set('latitude', latitude.toString());
-    url.searchParams.set('longitude', longitude.toString());
-    url.searchParams.set('count', '1');
-
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error('Reverse geocode failed');
-    }
-    const data = await response.json();
-    const result = data?.results?.[0];
-
-    if (!result) {
-      return 'Current Location';
-    }
-
-    return [result.name, result.admin1, result.country].filter(Boolean).join(', ');
   }
 
   private async fetchWeather(location: LocationData) {
@@ -213,8 +147,10 @@ export class WeatherWidgetComponent implements OnDestroy, OnInit {
     if (code === 3) return { label: 'Overcast', icon: '☁️' };
     if (code === 45 || code === 48) return { label: 'Fog', icon: '🌫️' };
     if (code >= 51 && code <= 57) return { label: 'Drizzle', icon: '🌦️' };
-    if ((code >= 61 && code <= 67) || (code >= 80 && code <= 82)) return { label: 'Rain', icon: '🌧️' };
-    if ((code >= 71 && code <= 77) || (code >= 85 && code <= 86)) return { label: 'Snow', icon: '🌨️' };
+    if ((code >= 61 && code <= 67) || (code >= 80 && code <= 82))
+      return { label: 'Rain', icon: '🌧️' };
+    if ((code >= 71 && code <= 77) || (code >= 85 && code <= 86))
+      return { label: 'Snow', icon: '🌨️' };
     if (code >= 95) return { label: 'Thunderstorm', icon: '⛈️' };
     return { label: 'Cloudy', icon: '☁️' };
   }

@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./top-bar.scss'],
 })
 export class TopBarComponent {
-  @Input() date = 'january 17 2026';
+  @Input() date = 'may 28 2026';
   constructor(private router: Router) {}
   goHome() {
     this.router.navigate(['/']);
